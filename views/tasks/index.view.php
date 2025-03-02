@@ -13,17 +13,28 @@
         </form>
     </div>
     <?php foreach ($tasks as $task): ?>
-    <!-- Task List Section -->
-    <div class="mt-4">
-        <!-- Example Task Card -->
-        <div class="card mt-3 shadow-sm">
-            <div class="card-body d-flex justify-content-between align-items-center">
-                <span><?= htmlspecialchars($task['task'])?></span>
-                <div> 
-                    <!-- Complete Task Button -->
-                    <button class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Complete">
-                        <i class="bi bi-check-lg"></i>
-                    </button>
+<!-- Task List Section -->
+<div class="mt-4">
+    <!-- Task Card -->
+    <div class="card mt-3 shadow-sm <?= $task['status'] === 'completed' ? 'bg-light' : '' ?>">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <span><?= htmlspecialchars($task['task'])?></span>
+
+            <div>
+                <!-- Display a badge for completed tasks -->
+                <?php if ($task['status'] === 'completed'): ?>
+                    <span class="badge bg-success">Completed</span>
+                <?php endif; ?>
+
+                <!-- Only show buttons for tasks that are NOT completed -->
+                <?php if ($task['status'] !== 'completed'): ?>
+                    <!-- Form for completing the task -->
+                    <form action="/complete" method="POST" style="display:inline;">
+                        <input type="hidden" name="task_id" value="<?= $task['id'] ?>">
+                        <button type="submit" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Complete">
+                            <i class="bi bi-check-lg"></i>
+                        </button>
+                    </form>
 
                     <!-- Edit Button -->
                     <button class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
@@ -34,11 +45,13 @@
                     <button class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
                         <i class="bi bi-trash"></i>
                     </button>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-    <?php endforeach; ?>
+</div>
+<?php endforeach; ?>
+
 </div>
 
 <?php require 'views/partials/footer.php' ?>
