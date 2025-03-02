@@ -46,11 +46,13 @@
                             <button class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Edit" onclick="showEditForm(<?= $task['id'] ?>)">
                                 <i class="bi bi-pencil"></i>
                             </button>
-
                             <!-- Delete Button -->
-                            <button class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <form action="/delete" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                <input type="hidden" name="task_id" value="<?= $task['id'] ?>">
+                                <button type="submit" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -59,18 +61,6 @@
     <?php endforeach; ?>
 </div>
 
-<script>
-function showEditForm(taskId) {
-    document.getElementById('task-text-' + taskId).classList.add('d-none');
-    document.getElementById('edit-form-' + taskId).classList.remove('d-none');
-    document.getElementById('actions-' + taskId).classList.add('d-none'); // Hide buttons
-}
-
-function hideEditForm(taskId) {
-    document.getElementById('task-text-' + taskId).classList.remove('d-none');
-    document.getElementById('edit-form-' + taskId).classList.add('d-none');
-    document.getElementById('actions-' + taskId).classList.remove('d-none'); // Show buttons again
-}
-</script>
+<?php require 'views/partials/javascript.php' ?>
 
 <?php require 'views/partials/footer.php' ?>
